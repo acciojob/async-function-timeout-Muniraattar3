@@ -1,38 +1,26 @@
-// Select necessary elements
-const textInput = document.getElementById("text");
-const delayInput = document.getElementById("delay");
-const submitButton = document.getElementById("btn");
-const outputDiv = document.getElementById("output");
-
-// Async function to introduce delay
-async function delayMessage(text, delay) {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(text);
-    }, delay);
-  });
+// Function to simulate a delay
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-// Event listener for the submit button
-submitButton.addEventListener("click", async () => {
-  // Get input values
-  const text = textInput.value.trim();
-  const delay = parseInt(delayInput.value, 10);
+// Async function to handle form submission
+async function handleSubmit() {
+  // Get the user input values
+  const text = document.getElementById('text').value;
+  const delayTime = parseInt(document.getElementById('delay').value, 10);
 
-  // Validate inputs
-  if (!text || isNaN(delay) || delay < 0) {
-    outputDiv.textContent = "Please enter valid text and a positive delay.";
+  // Ensure delay is a valid number
+  if (isNaN(delayTime)) {
+    alert('Please enter a valid delay time.');
     return;
   }
 
-  // Clear and show processing message
-  outputDiv.textContent = "Processing...";
+  // Wait for the specified delay before updating the output
+  await delay(delayTime);
 
-  try {
-    // Wait for the delay and display the text
-    const result = await delayMessage(text, delay);
-    outputDiv.textContent = result;
-  } catch (error) {
-    outputDiv.textContent = "An error occurred.";
-  }
-});
+  // Display the user-provided text in the output div
+  document.getElementById('output').textContent = text;
+}
+
+// Event listener for the button click
+document.getElementById('btn').addEventListener('click', handleSubmit);
